@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "advval"
+    }
+  },
+  "defaultProject": "advval",
+  "cli": {
+    "analytics": "cc2631b8-cecb-450b-92df-c02c3abd7677"
+  }
 }
