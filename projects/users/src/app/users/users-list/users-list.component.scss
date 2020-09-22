@@ -8,12 +8,17 @@
 
 table {
   width: 100%;
+  padding: 1em;
 }
 
 th.mat-header-cell {
   font-size: 1em;
   text-align: center;
   height: 60px;
+}
+
+tr {
+  cursor: pointer;
 }
 
 .mat-form-field {
@@ -28,4 +33,8 @@ th.mat-header-cell {
 .add-button {
   display: flex;
   justify-content: flex-end;
+}
+
+.selected {
+  background-color: #ccc;
 }
