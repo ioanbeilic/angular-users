@@ -1,0 +1,31 @@
+.users-list {
+  background-color: #fff;
+  padding: 2em;
+  margin: 1em;
+  min-height: 100%;
+  overflow-y: scroll;
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-size: 1em;
+  text-align: center;
+  height: 60px;
+}
+
+.mat-form-field {
+  font-size: 16px;
+  min-width: 100%;
+}
+
+.mat-cell {
+  padding: 1em;
+}
+
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,38 @@
+.mat-icon {
+  font-size: 36px;
+  vertical-align: sub;
+  color: #1e85be;
+}
+
+h1 {
+  font-weight: 200;
+  color: #1e85be;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.pt-3 {
+  padding-top: 3em;
+}
+
+.pl-3 {
+  padding-left: 3em;
+}
+
+.pr {
+  padding-right: 3em;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.row {
+  position: relative;
+  flex: 1;
+}
