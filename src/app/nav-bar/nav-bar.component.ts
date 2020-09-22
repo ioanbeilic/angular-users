@@ -21,8 +21,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
       } else {
         this.route = 'Users';
       }
-
-      console.log(this.route);
     });
   }
   ngOnInit() {}
