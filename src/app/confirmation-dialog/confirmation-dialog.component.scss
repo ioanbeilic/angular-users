@@ -1,4 +1,13 @@
 .alert-dialog {
+  min-width: 350px;
+  text-align: center;
+}
+.mat-icon {
+  margin-left: -40px;
+  font-size: 5em;
+}
+
+.dialog-btn {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }

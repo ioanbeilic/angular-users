@@ -19,6 +19,7 @@ th.mat-header-cell {
 
 tr {
   cursor: pointer;
+  text-align: center;
 }
 
 .mat-form-field {
@@ -37,4 +38,8 @@ tr {
 
 .selected {
   background-color: #ccc;
+}
+
+.mat-table {
+  display: table;
 }

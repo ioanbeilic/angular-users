@@ -58,8 +58,18 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <div class="example-button-row">
-            <div class="example-flex-container">
+          <div>
+            <div>
+              <mat-slide-toggle
+                (click)="changeStatus(element)"
+                [checked]="element.status"
+                color="primary"
+              >
+                {{
+                  element.status ? "Inactive" : "Active &nbsp;"
+                }}</mat-slide-toggle
+              >
+              &nbsp;
               <button
                 mat-icon-button
                 color="primary"

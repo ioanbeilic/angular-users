@@ -114,3 +114,39 @@ body {
 .text-danger {
   color: rgb(255, 57, 1);
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.pt-1 {
+  padding-top: 1em;
+}
+
+.pl-1 {
+  padding-left: 1em;
+}
+
+.pt-3 {
+  padding-top: 3em;
+}
+
+.pl-3 {
+  padding-left: 3em;
+}
+
+.pr {
+  padding-right: 3em;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.row {
+  position: relative;
+  flex: 1;
+}

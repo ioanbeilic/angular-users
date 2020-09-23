@@ -3,5 +3,6 @@ export interface IUser {
   name: string;
   alias: string;
   email: string;
+  status: boolean;
   date: Date;
 }

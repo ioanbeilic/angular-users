@@ -10,11 +10,46 @@ import { UserService } from '../user.service';
 import { UserComponent } from '../user/user.component';
 
 const ELEMENT_DATA: IUser[] = [
-  { id: 1, name: 'aaa', alias: 'AAA', email: 'aa@aaa.com', date: new Date() },
-  { id: 2, name: 'aab', alias: 'AAb', email: 'ab@aaa.com', date: new Date() },
-  { id: 3, name: 'abc', alias: 'Abc', email: 'ac@aaa.com', date: new Date() },
-  { id: 4, name: 'aaa', alias: 'AAA', email: 'aa@aaa.com', date: new Date() },
-  { id: 5, name: 'aaa', alias: 'AAA', email: 'aa@aaa.com', date: new Date() },
+  {
+    id: 1,
+    name: 'aaa',
+    alias: 'AAA',
+    email: 'aa@aaa.com',
+    status: true,
+    date: new Date(),
+  },
+  {
+    id: 2,
+    name: 'aab',
+    alias: 'AAb',
+    email: 'ab@aaa.com',
+    status: true,
+    date: new Date(),
+  },
+  {
+    id: 3,
+    name: 'abc',
+    alias: 'Abc',
+    email: 'ac@aaa.com',
+    status: true,
+    date: new Date(),
+  },
+  {
+    id: 4,
+    name: 'aaa',
+    alias: 'AAA',
+    email: 'aa@aaa.com',
+    status: false,
+    date: new Date(),
+  },
+  {
+    id: 5,
+    name: 'aaa',
+    alias: 'AAA',
+    email: 'aa@aaa.com',
+    status: true,
+    date: new Date(),
+  },
 ];
 
 @Component({
@@ -122,23 +157,34 @@ export class UsersListComponent implements OnInit {
   userDeleteDialog(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
-        message: 'delete user',
-        icon: 'delete',
+        message: 'Delete selected user ?',
+        icon: 'delete_forever',
         type: 'danger',
-        btnPresses: '',
+        btnPress: false,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
 
-      // openSnackBar(result.message);
+      console.log(result);
 
-      this.snackBar.open('datos borados', result.action, {
-        duration: 2000,
-        panelClass: ['mat-toolbar', 'toast-success'],
-        verticalPosition: 'top',
-      });
+      /**
+       * if result is true, yes is presse
+       * remove the user
+       */
+
+      if (result.btnPresses) {
+        this.userService.deleteUser(this.selectedUser.id).subscribe((res) => {
+          this.snackBar.open('datos borados', result.action, {
+            duration: 2000,
+            panelClass: ['mat-toolbar', 'toast-success'],
+            verticalPosition: 'top',
+          });
+        });
+      }
     });
   }
+
+  changeStatus(user: IUser) {}
 }

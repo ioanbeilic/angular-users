@@ -10,7 +10,15 @@ export interface IDialogData {
   message: string;
   icon: string;
   type: string;
+  btnPress: boolean;
 }
+
+/*
+  message: 'delete user',
+  icon: 'delete',
+  type: 'danger',
+  btnPresses: false,
+*/
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -18,12 +26,22 @@ export interface IDialogData {
   styleUrls: ['./confirmation-dialog.component.scss'],
 })
 export class ConfirmationDialogComponent {
+  color: string;
+
   constructor(
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData
-  ) {}
+  ) {
+    console.log(this.data);
+    this.color = `text-${this.data.type}`;
+  }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.data.btnPress = false;
+    this.dialogRef.close(this.data);
+  }
+  onYesClick(): void {
+    this.data.btnPress = true;
+    this.dialogRef.close(this.data);
   }
 }

@@ -1,10 +1,20 @@
 <div mat-dialog-content class="alert-dialog">
-  <mat-icon aria-hidden="false" aria-label="Example home icon">{{
-    data.icon
-  }}</mat-icon>
-  {{ data.message }}
+  <div>
+    <mat-icon
+      class="{{ color }}"
+      aria-hidden="false"
+      aria-label="dialog icon"
+      >{{ data.icon }}</mat-icon
+    >
+  </div>
+  <mat-divider></mat-divider>
+  <div class="pt-1">
+    {{ data.message }}
+  </div>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="dialog-btn">
   <button mat-button (click)="onNoClick()">No</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+  <button color="warn" mat-button (click)="onYesClick()" cdkFocusInitial>
+    Yes
+  </button>
 </div>
