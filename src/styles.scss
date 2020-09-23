@@ -47,3 +47,70 @@ body {
   background: #222222;
   padding: 5px;
 }
+
+.toast-success {
+  background-color: rgb(102, 176, 50);
+  border: solid 1px #222222;
+  .mat-simple-snackbar {
+    font-size: 1.2rem;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-color: #222222;
+    -webkit-text-stroke-width: 0.2px;
+    justify-content: center;
+  }
+}
+
+.toast-warning {
+  background-color: rgb(255, 196, 4);
+  border: solid 1px #222222;
+  font-size: 1.2rem;
+  .mat-simple-snackbar {
+    font-size: 1.2rem;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-color: #222222;
+    -webkit-text-stroke-width: 0.2px;
+    justify-content: center;
+  }
+}
+
+.toast-info {
+  background-color: rgb(7, 168, 255);
+  border: solid 1px #222222;
+  font-size: 1.2rem;
+  .mat-simple-snackbar {
+    font-size: 1.2rem;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-color: #222222;
+    -webkit-text-stroke-width: 0.2px;
+    justify-content: center;
+  }
+}
+
+.toast-danger {
+  background-color: rgb(255, 57, 1);
+  border: solid 1px #222222;
+  font-size: 1.2rem;
+  .mat-simple-snackbar {
+    font-size: 1.2rem;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-color: #222222;
+    -webkit-text-stroke-width: 0.2px;
+    justify-content: center;
+  }
+}
+
+.text-success {
+  color: rgb(102, 176, 50);
+}
+
+.text-warning {
+  color: rgb(255, 196, 4);
+}
+
+.text-info {
+  color: rgb(7, 168, 255);
+}
+
+.text-danger {
+  color: rgb(255, 57, 1);
+}

@@ -6,15 +6,24 @@ import { MaterialModule } from 'src/app/material.module';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserComponent } from './user/user.component';
-import { UserOptionsComponent } from './user-options/user-options.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserInfoComponent } from './user-info/user-info.component';
+import { ConfirmationDialogModule } from 'src/app/confirmation-dialog/confirmation-dialog.module';
 
 @NgModule({
   declarations: [
     UserComponent,
     UsersComponent,
     UsersListComponent,
-    UserOptionsComponent,
+    UserInfoComponent,
+    ResetPasswordComponent,
   ],
-  imports: [CommonModule, UsersRoutingModule, MaterialModule, MatIconModule],
+  imports: [
+    CommonModule,
+    UsersRoutingModule,
+    MaterialModule,
+    MatIconModule,
+    ConfirmationDialogModule,
+  ],
 })
 export class UsersModule {}

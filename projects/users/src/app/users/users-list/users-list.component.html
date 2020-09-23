@@ -66,8 +66,30 @@
                 aria-label="Edit user"
                 matTooltip="Edit user"
                 matTooltipClass="tooltip"
+                (click)="userInfoDialog($event)"
+              >
+                <mat-icon>info</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                color="secundary"
+                aria-label="Remove user"
+                matTooltip="Remove user"
+                matTooltipClass="tooltip"
+                (click)="userEditDialog($event)"
               >
                 <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="secundary"
+                aria-label="Edit user"
+                matTooltip="Edit user"
+                matTooltipClass="tooltip"
+                (click)="userChangePasswordDialog($event)"
+              >
+                <mat-icon>vpn_key</mat-icon>
               </button>
 
               <button
@@ -76,6 +98,7 @@
                 aria-label="Remove user"
                 matTooltip="Remove user"
                 matTooltipClass="tooltip"
+                (click)="userDeleteDialog($event)"
               >
                 <mat-icon>delete_outline</mat-icon>
               </button>
