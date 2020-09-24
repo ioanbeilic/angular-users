@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NotificationService } from 'projects/users/src/app/shared/services/notification.service';
 
 /**
  * data dialog
@@ -32,13 +33,12 @@ export class ConfirmationDialogComponent {
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData
   ) {
-    console.log(this.data);
     this.color = `text-${this.data.type}`;
   }
 
   onNoClick(): void {
     this.data.btnPress = false;
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
   onYesClick(): void {
     this.data.btnPress = true;

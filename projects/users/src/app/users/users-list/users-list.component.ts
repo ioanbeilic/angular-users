@@ -1,8 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
+import { ISnackBarData } from '../../shared/interfaces/snackbar.interface';
+import { NotificationService } from '../../shared/services/notification.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { UserInfoComponent } from '../user-info/user-info.component';
 import { IUser } from '../user.interface';
@@ -73,7 +76,7 @@ export class UsersListComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -165,23 +168,23 @@ export class UsersListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-
-      console.log(result);
-
       /**
        * if result is true, yes is presse
        * remove the user
        */
+      if (result) {
+        // check if click out or cancel
+        if (result.btnPress) {
+          // check if press yes
+          this.userService.deleteUser(this.selectedUser.id).subscribe((res) => {
+            const errorData: ISnackBarData = {
+              message: 'User Removed',
+              panelClass: ['toast-success'],
+            };
 
-      if (result.btnPresses) {
-        this.userService.deleteUser(this.selectedUser.id).subscribe((res) => {
-          this.snackBar.open('datos borados', result.action, {
-            duration: 2000,
-            panelClass: ['mat-toolbar', 'toast-success'],
-            verticalPosition: 'top',
+            this.notificationService.notification$.next(errorData);
           });
-        });
+        }
       }
     });
   }
