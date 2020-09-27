@@ -9,6 +9,7 @@ import { UserComponent } from './user/user.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { ConfirmationDialogModule } from 'src/app/confirmation-dialog/confirmation-dialog.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -24,6 +25,9 @@ import { ConfirmationDialogModule } from 'src/app/confirmation-dialog/confirmati
     MaterialModule,
     MatIconModule,
     ConfirmationDialogModule,
+      FormsModule,
+      ReactiveFormsModule
+
   ],
   providers: [],
 })

@@ -1,14 +1,13 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 import { ISnackBarData } from '../../shared/interfaces/snackbar.interface';
 import { NotificationService } from '../../shared/services/notification.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { UserInfoComponent } from '../user-info/user-info.component';
-import { IUser } from '../user.interface';
+import { IUser } from '../../shared/interfaces/user.interface';
 import { UserService } from '../user.service';
 import { UserComponent } from '../user/user.component';
 
@@ -19,6 +18,9 @@ const ELEMENT_DATA: IUser[] = [
     alias: 'AAA',
     email: 'aa@aaa.com',
     status: true,
+    departments: ['administrator', 'user'],
+    userType: 'demo',
+    privileges: ['read', 'write', 'delete'],
     date: new Date(),
   },
   {
@@ -26,6 +28,9 @@ const ELEMENT_DATA: IUser[] = [
     name: 'aab',
     alias: 'AAb',
     email: 'ab@aaa.com',
+    departments: ['administrator', 'user'],
+    userType: 'demo',
+    privileges: ['read', 'write', 'delete'],
     status: true,
     date: new Date(),
   },
@@ -34,6 +39,9 @@ const ELEMENT_DATA: IUser[] = [
     name: 'abc',
     alias: 'Abc',
     email: 'ac@aaa.com',
+    departments: ['administrator', 'user'],
+    userType: 'demo',
+    privileges: ['read', 'write', 'delete'],
     status: true,
     date: new Date(),
   },
@@ -42,6 +50,9 @@ const ELEMENT_DATA: IUser[] = [
     name: 'aaa',
     alias: 'AAA',
     email: 'aa@aaa.com',
+    departments: ['administrator', 'user'],
+    userType: 'demo',
+    privileges: ['read', 'write', 'delete'],
     status: false,
     date: new Date(),
   },
@@ -50,6 +61,9 @@ const ELEMENT_DATA: IUser[] = [
     name: 'aaa',
     alias: 'AAA',
     email: 'aa@aaa.com',
+    departments: ['administrator', 'user'],
+    userType: 'demo',
+    privileges: ['read', 'write', 'delete'],
     status: true,
     date: new Date(),
   },
@@ -71,7 +85,6 @@ export class UsersListComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   selectedId: number = 1;
-  selectedUser: IUser;
 
   constructor(
     private userService: UserService,
@@ -90,7 +103,6 @@ export class UsersListComponent implements OnInit {
 
   selectUser(user: IUser) {
     this.selectedId = user.id;
-    this.selectedUser = user;
     // this.userService.selectedUser(user);
   }
 
@@ -100,17 +112,18 @@ export class UsersListComponent implements OnInit {
    * on dialogRef.afterClosed() the result return data from dialog, eho populate the variable passed before
    */
 
-  userInfoDialog() {
+  userInfoDialog(user: IUser) {
     console.log('in user info');
     const dialogRef = this.dialog.open(UserInfoComponent, {
       width: '70vw',
       height: '70vh',
-      data: this.selectedUser,
+      data: user,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.selectedUser = result;
+      console.log(result);
+      // this.selectedUser = result;
     });
   }
 
@@ -120,16 +133,33 @@ export class UsersListComponent implements OnInit {
    * on dialogRef.afterClosed() the result return data from dialog, eho populate the variable passed before
    */
 
-  userEditDialog(): void {
+  userEditDialog(user: IUser): void {
     const dialogRef = this.dialog.open(UserComponent, {
       width: '70vw',
       height: '70vh',
-      data: this.selectedUser,
+      data: user,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.selectedUser = result;
+
+      console.log(result);
+      // this.selectedUser = result;
+    });
+  }
+
+  userNewDialog(): void {
+    const dialogRef = this.dialog.open(UserComponent, {
+      // data: user,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+
+      console.log(result);
+
+      // lanch notification when update user from dialog
+      // todo update the dom
     });
   }
 
@@ -139,14 +169,81 @@ export class UsersListComponent implements OnInit {
    * on dialogRef.afterClosed() the result return data from dialog, eho populate the variable passed before
    */
 
-  userChangePasswordDialog(): void {
+  userChangePasswordDialog(user: IUser): void {
     const dialogRef = this.dialog.open(ResetPasswordComponent, {
-      data: this.selectedUser,
+      data: user,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.selectedUser = result;
+
+      console.log(result);
+      // this.selectedUser = result;
+    });
+  }
+
+  /**
+   * disable user
+   *
+   */
+
+  userDisableConfirmation(event: MatSlideToggleChange, user: IUser): void {
+    // crate a default dialog
+    let data = {
+      message: 'Enable selected user ?',
+      icon: 'info',
+      type: 'info',
+      btnPress: false,
+    };
+
+    if (user.status == true) {
+      // update default dialog id user is active
+      data = {
+        message: 'Disable selected user ?',
+        icon: 'remove_circle',
+        type: 'danger',
+        btnPress: false,
+      };
+    }
+    // load data to dialog
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      /**
+       * if result btnPress is true, yes is pressed
+       * remove the user
+       */
+      if (result) {
+        // check if click out or cancel
+        if (result.btnPress) {
+          // yes is pressed
+          // update user state
+          user.status = !user.status;
+          this.userService.updateUser(user).subscribe(
+            (res) => {
+              // if response from server is ok, update the button position
+              event.source.checked = !user.status;
+              // prepare the toast message
+              const notificationData: ISnackBarData = {
+                message: 'User Inactive',
+                panelClass: ['toast-success'],
+              };
+              // lanch notification service
+              this.notificationService.notification$.next(notificationData);
+            },
+            (error) => {
+              // for server error return the same state
+              event.source.checked = !user.status;
+            }
+          );
+        }
+      } else {
+        event.source.checked = user.status;
+      }
+
+      // replace  with server response
     });
   }
 
@@ -157,7 +254,7 @@ export class UsersListComponent implements OnInit {
    * in this case btnPressed is the button pressed on modal who contain a yes o no value to delete fields
    */
 
-  userDeleteDialog(): void {
+  userDeleteConfirmation(user: IUser): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         message: 'Delete selected user ?',
@@ -169,25 +266,27 @@ export class UsersListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       /**
-       * if result is true, yes is presse
+       * if result btnPress is true, yes is pressed
        * remove the user
        */
       if (result) {
         // check if click out or cancel
         if (result.btnPress) {
           // check if press yes
-          this.userService.deleteUser(this.selectedUser.id).subscribe((res) => {
-            const errorData: ISnackBarData = {
+          this.userService.deleteUser(user.id).subscribe((res: IUser) => {
+            const notificationData: ISnackBarData = {
               message: 'User Removed',
               panelClass: ['toast-success'],
             };
 
-            this.notificationService.notification$.next(errorData);
+            this.notificationService.notification$.next(notificationData);
+            // if server response success remove element directly form dom
+            this.dataSource.data = this.dataSource.data.filter(
+              (el) => el.id !== res.id
+            );
           });
         }
       }
     });
   }
-
-  changeStatus(user: IUser) {}
 }

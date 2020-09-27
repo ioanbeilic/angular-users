@@ -1,11 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { IUser } from './user.interface';
+import { IUser } from '../shared/interfaces/user.interface';
 import { environment } from '../../environments/environment';
-import { NotificationService } from '../shared/services/notification.service';
-import { ISnackBarData } from '../shared/interfaces/snackbar.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -38,10 +35,5 @@ export class UserService {
 
   deleteUser(id: number) {
     return this.http.delete(`${this.baseUrl}/users/${id}`);
-  }
-
-  errorHandler(error: HttpErrorResponse) {
-    // save to server
-    return throwError(error.message || 'server error.');
   }
 }

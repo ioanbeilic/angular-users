@@ -1,0 +1,44 @@
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+         Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.form-element {
+  padding: 5px;
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+}
+
+.custom-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  span {
+    font-weight: 500;
+    text-align: center;
+  }
+  .mat-divider {
+    width: 25%;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    border-top-color: #3f51b5;
+  }
+}

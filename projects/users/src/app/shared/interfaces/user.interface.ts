@@ -3,6 +3,10 @@ export interface IUser {
   name: string;
   alias: string;
   email: string;
+  departments: string[];
+  privileges: string[];
+  userType: string;
   status: boolean;
+  deleted?: boolean;
   date: Date;
 }

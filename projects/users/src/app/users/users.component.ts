@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ISnackBarData } from '../shared/interfaces/snackbar.interface';
 import { NotificationService } from '../shared/services/notification.service';
-import { IUser } from './user.interface';
+import { IUser } from '../shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-users',

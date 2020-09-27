@@ -51,6 +51,7 @@ body {
 .toast-success {
   background-color: rgb(102, 176, 50);
   border: solid 1px #222222;
+  text-align: center;
   .mat-simple-snackbar {
     font-size: 1.2rem;
     -webkit-text-fill-color: white;
@@ -64,6 +65,7 @@ body {
   background-color: rgb(255, 196, 4);
   border: solid 1px #222222;
   font-size: 1.2rem;
+  text-align: center;
   .mat-simple-snackbar {
     font-size: 1.2rem;
     -webkit-text-fill-color: white;
@@ -77,6 +79,7 @@ body {
   background-color: rgb(7, 168, 255);
   border: solid 1px #222222;
   font-size: 1.2rem;
+  text-align: center;
   .mat-simple-snackbar {
     font-size: 1.2rem;
     -webkit-text-fill-color: white;
@@ -87,9 +90,10 @@ body {
 }
 
 .toast-danger {
-  background-color: rgb(255, 57, 1);
+  background-color: #f44336;
   border: solid 1px #222222;
   font-size: 1.2rem;
+  text-align: center;
   .mat-simple-snackbar {
     font-size: 1.2rem;
     -webkit-text-fill-color: white;
@@ -112,7 +116,7 @@ body {
 }
 
 .text-danger {
-  color: rgb(255, 57, 1);
+  color: f44336;
 }
 
 .center {
@@ -138,15 +142,4 @@ body {
 
 .pr {
   padding-right: 3em;
-}
-
-.container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-}
-
-.row {
-  position: relative;
-  flex: 1;
 }

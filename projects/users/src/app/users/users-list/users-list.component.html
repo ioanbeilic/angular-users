@@ -6,6 +6,7 @@
       matTooltipClass="tooltip"
       color="primary"
       aria-label="Example icon button with a delete icon"
+      (click)="userNewDialog()"
     >
       <mat-icon>add</mat-icon>
     </button>
@@ -61,7 +62,7 @@
           <div>
             <div>
               <mat-slide-toggle
-                (click)="changeStatus(element)"
+                (change)="userDisableConfirmation($event, element)"
                 [checked]="element.status"
                 color="primary"
               >
@@ -76,7 +77,7 @@
                 aria-label="Edit user"
                 matTooltip="Edit user"
                 matTooltipClass="tooltip"
-                (click)="userInfoDialog($event)"
+                (click)="userInfoDialog(element)"
               >
                 <mat-icon>info</mat-icon>
               </button>
@@ -87,7 +88,7 @@
                 aria-label="Remove user"
                 matTooltip="Remove user"
                 matTooltipClass="tooltip"
-                (click)="userEditDialog($event)"
+                (click)="userEditDialog(element)"
               >
                 <mat-icon>edit</mat-icon>
               </button>
@@ -97,7 +98,7 @@
                 aria-label="Edit user"
                 matTooltip="Edit user"
                 matTooltipClass="tooltip"
-                (click)="userChangePasswordDialog($event)"
+                (click)="userChangePasswordDialog(element)"
               >
                 <mat-icon>vpn_key</mat-icon>
               </button>
@@ -108,7 +109,7 @@
                 aria-label="Remove user"
                 matTooltip="Remove user"
                 matTooltipClass="tooltip"
-                (click)="userDeleteDialog($event)"
+                (click)="userDeleteConfirmation(element)"
               >
                 <mat-icon>delete_outline</mat-icon>
               </button>
