@@ -5,8 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 import { ISnackBarData } from '../../shared/interfaces/snackbar.interface';
 import { NotificationService } from '../../shared/services/notification.service';
-import { ResetPasswordComponent } from '../reset-password/reset-password.component';
-import { UserInfoComponent } from '../user-info/user-info.component';
 import { IUser } from '../../shared/interfaces/user.interface';
 import { UserService } from '../user.service';
 import { UserComponent } from '../user/user.component';
@@ -19,7 +17,7 @@ const ELEMENT_DATA: IUser[] = [
     email: 'aa@aaa.com',
     status: true,
     departments: ['administrator', 'user'],
-    userType: 'demo',
+    userType: 'develop tem and testing',
     privileges: ['read', 'write', 'delete'],
     date: new Date(),
   },
@@ -29,7 +27,7 @@ const ELEMENT_DATA: IUser[] = [
     alias: 'AAb',
     email: 'ab@aaa.com',
     departments: ['administrator', 'user'],
-    userType: 'demo',
+    userType: 'develop tem and testing',
     privileges: ['read', 'write', 'delete'],
     status: true,
     date: new Date(),
@@ -40,7 +38,7 @@ const ELEMENT_DATA: IUser[] = [
     alias: 'Abc',
     email: 'ac@aaa.com',
     departments: ['administrator', 'user'],
-    userType: 'demo',
+    userType: 'other',
     privileges: ['read', 'write', 'delete'],
     status: true,
     date: new Date(),
@@ -51,7 +49,7 @@ const ELEMENT_DATA: IUser[] = [
     alias: 'AAA',
     email: 'aa@aaa.com',
     departments: ['administrator', 'user'],
-    userType: 'demo',
+    userType: 'other',
     privileges: ['read', 'write', 'delete'],
     status: false,
     date: new Date(),
@@ -62,7 +60,7 @@ const ELEMENT_DATA: IUser[] = [
     alias: 'AAA',
     email: 'aa@aaa.com',
     departments: ['administrator', 'user'],
-    userType: 'demo',
+    userType: 'other',
     privileges: ['read', 'write', 'delete'],
     status: true,
     date: new Date(),
@@ -93,7 +91,16 @@ export class UsersListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.selectUser(ELEMENT_DATA[0]);
+    this.getUsers();
+    this.selectUser(this.dataSource.data[0]);
+  }
+
+  getUsers() {
+    this.userService
+      .getUsers()
+      .subscribe(
+        (res: IUser[]) => (this.dataSource = new MatTableDataSource(res))
+      );
   }
 
   applyFilter(event: Event) {
@@ -113,17 +120,8 @@ export class UsersListComponent implements OnInit {
    */
 
   userInfoDialog(user: IUser) {
-    console.log('in user info');
-    const dialogRef = this.dialog.open(UserInfoComponent, {
-      width: '70vw',
-      height: '70vh',
-      data: user,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      console.log(result);
-      // this.selectedUser = result;
+    this.dialog.open(UserComponent, {
+      data: { user, disabled: true, title: 'Information' },
     });
   }
 
@@ -135,50 +133,17 @@ export class UsersListComponent implements OnInit {
 
   userEditDialog(user: IUser): void {
     const dialogRef = this.dialog.open(UserComponent, {
-      width: '70vw',
-      height: '70vh',
-      data: user,
+      data: { user, disabled: false, title: 'Edit User' },
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-
-      console.log(result);
-      // this.selectedUser = result;
+    dialogRef.afterClosed().subscribe(() => {
+      this.getUsers();
     });
   }
 
   userNewDialog(): void {
-    const dialogRef = this.dialog.open(UserComponent, {
-      // data: user,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-
-      console.log(result);
-
-      // lanch notification when update user from dialog
-      // todo update the dom
-    });
-  }
-
-  /**
-   * angular material standard dialog
-   * on dialogRef variable data send data to dialog, all data must be passed here as e empty variable
-   * on dialogRef.afterClosed() the result return data from dialog, eho populate the variable passed before
-   */
-
-  userChangePasswordDialog(user: IUser): void {
-    const dialogRef = this.dialog.open(ResetPasswordComponent, {
-      data: user,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-
-      console.log(result);
-      // this.selectedUser = result;
+    const dialogRef = this.dialog.open(UserComponent, {});
+    dialogRef.afterClosed().subscribe(() => {
+      this.getUsers();
     });
   }
 
@@ -284,6 +249,39 @@ export class UsersListComponent implements OnInit {
             this.dataSource.data = this.dataSource.data.filter(
               (el) => el.id !== res.id
             );
+          });
+        }
+      }
+    });
+  }
+
+  userResetPasswordConfirmation(user: IUser): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message:
+          'Reset password for selected user ? A new password we will be send to email',
+        icon: 'engineering',
+        type: 'danger',
+        btnPress: false,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      /**
+       * if result btnPress is true, yes is pressed
+       * remove the user
+       */
+      if (result) {
+        // check if click out or cancel
+        if (result.btnPress) {
+          // check if press yes
+          this.userService.resetPassword(user.id).subscribe(() => {
+            const notificationData: ISnackBarData = {
+              message: 'Password sended',
+              panelClass: ['toast-success'],
+            };
+
+            this.notificationService.notification$.next(notificationData);
           });
         }
       }

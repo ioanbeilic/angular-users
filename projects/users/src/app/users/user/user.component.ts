@@ -1,7 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ISnackBarData } from '../../shared/interfaces/snackbar.interface';
 import { IUser } from '../../shared/interfaces/user.interface';
+import { NotificationService } from '../../shared/services/notification.service';
+import { UserService } from '../user.service';
+
+interface IData {
+  user: IUser;
+  disabled: boolean;
+  title: string;
+}
 
 @Component({
   selector: 'app-user',
@@ -13,27 +22,49 @@ export class UserComponent implements OnInit {
   fieldTextType: boolean;
   departments = ['administrator', 'user', 'demo'];
   privileges = ['read', 'write', 'delete', 'user manager'];
-  statusList = ['active', 'inactive', 'delete'];
+  statusList = [true, false];
   userTypes = ['develop tem and testing', 'other'];
   selectedDepartment: string[];
   selectedUserType: string;
-  selectedStatus: string;
+  selectedStatus: boolean;
   selectedPrivileges: string[];
+  user: IUser;
+  withData: boolean = false;
+  inputDisabled: boolean = false;
+  title: string;
 
   constructor(
     public dialogRef: MatDialogRef<UserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: IData,
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private notificationService: NotificationService
+  ) {
+    if (this.data) {
+      if (this.data.user) {
+        this.user = this.data.user;
+        this.withData = true;
+        this.inputDisabled = this.data.disabled;
+        this.title = this.data.title;
+      }
+    }
+  }
 
   ngOnInit(): void {
-    this.createForm();
+    if (this.withData) {
+      this.updateForm();
+    } else {
+      this.title = 'New User';
+      this.createForm();
+    }
   }
+
+  // to do combine create and update form, the problem is the custom validator
 
   createForm() {
     this.formGroup = this.formBuilder.group(
       {
-        username: [
+        alias: [
           '',
           [
             Validators.required,
@@ -56,15 +87,83 @@ export class UserComponent implements OnInit {
         ],
         confirmPassword: ['', [Validators.required]],
         userType: ['', [Validators.required]],
-        departments: [[], [Validators.required]],
-        privileges: [[]],
-        status: [true, [Validators.required]],
+        departments: [null, [Validators.required]],
+        privileges: [null, [Validators.required]],
+        status: [null, [Validators.required]],
       },
       { validator: this.mustMatch('password', 'confirmPassword') }
     );
   }
 
+  updateForm() {
+    this.formGroup = this.formBuilder.group({
+      alias: [
+        {
+          value: this.withData ? this.user.alias : '',
+          disabled: this.inputDisabled,
+        },
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(20),
+        ],
+      ],
+      name: [
+        {
+          value: this.withData ? this.user.name : '',
+          disabled: this.inputDisabled,
+        },
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(100),
+        ],
+      ],
+      email: [
+        {
+          value: this.withData ? this.user.email : '',
+          disabled: this.inputDisabled ? true : null,
+        },
+
+        [Validators.required, Validators.email],
+      ],
+      userType: [
+        {
+          value: this.withData ? this.user.userType : '',
+          disabled: this.inputDisabled ? true : null,
+        },
+        [Validators.required],
+      ],
+      departments: [
+        {
+          value: this.withData ? this.user.departments : null,
+          disabled: this.inputDisabled ? true : null,
+        },
+        [Validators.required],
+      ],
+      privileges: [
+        {
+          value: this.withData ? this.user.privileges : null,
+          disabled: this.inputDisabled ? true : null,
+        },
+
+        [Validators.required],
+      ],
+      status: [
+        {
+          value: this.withData ? this.user.status : null,
+          disabled: this.inputDisabled ? true : null,
+        },
+        [Validators.required],
+      ],
+    });
+  }
+
   private getDepartments() {}
+
+  private getUserType() {}
+
+  private getPrivileges() {}
 
   // custom validator to check that two fields match
   private mustMatch(controlName: string, matchingControlName: string) {
@@ -94,9 +193,14 @@ export class UserComponent implements OnInit {
     this.fieldTextType = !this.fieldTextType;
   }
 
-  onSubmit(data: IUser) {
-    // data.status = this.selectedStatus;
+  onSubmit(user: IUser) {
+    this.userService.createUser(user).subscribe(() => {
+      const notificationData: ISnackBarData = {
+        message: 'User Created',
+        panelClass: ['toast-success'],
+      };
 
-    console.log(data);
+      this.notificationService.notification$.next(notificationData);
+    });
   }
 }

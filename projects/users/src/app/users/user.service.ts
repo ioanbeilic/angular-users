@@ -36,4 +36,29 @@ export class UserService {
   deleteUser(id: number) {
     return this.http.delete(`${this.baseUrl}/users/${id}`);
   }
+
+  resetPassword(userId: number, password: string = '') {
+    if (!password) {
+      password = Math.random() // Generate random number, eg: 0.123456
+        .toString(36) // Convert  to base-36 : "0.4fzyo82mvyr"
+        .slice(-8); // Cut off last 8 characters : "yo82mvyr"
+    }
+    return this.http.patch(`${this.baseUrl}/users/reset-password`, password);
+  }
+
+  getDepartments() {
+    return this.http.get(`${this.baseUrl}/users/departments`);
+  }
+
+  createDepartments(department: string) {
+    return this.http.post(`${this.baseUrl}/users/departments`, department);
+  }
+
+  userTypes() {
+    return this.http.get(`${this.baseUrl}/users/user-types`);
+  }
+
+  privileges() {
+    return this.http.get(`${this.baseUrl}/users/privileges`);
+  }
 }
