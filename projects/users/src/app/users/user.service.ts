@@ -21,8 +21,8 @@ export class UserService {
     return this.http.get<IUser[]>(`${this.baseUrl}/users/`);
   }
 
-  getUser(user: IUser): Observable<IUser> {
-    return this.http.get<IUser>(`${this.baseUrl}/users/${user.id}`);
+  getUser(userId: number): Observable<IUser> {
+    return this.http.get<IUser>(`${this.baseUrl}/users/${userId}`);
   }
 
   createUser(user: IUser) {

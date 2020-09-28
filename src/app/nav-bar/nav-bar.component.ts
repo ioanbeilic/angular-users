@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 
@@ -12,10 +12,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
   route: string;
 
   // create a subscribe to be unloaded on destroy
-  subsrcriber: Subscription;
+  subscriber: Subscription;
 
   constructor(location: Location, router: Router) {
-    this.subsrcriber = router.events.subscribe((val) => {
+    this.subscriber = router.events.subscribe((val) => {
       if (location.path() != '') {
         this.route = location.path();
       } else {
@@ -26,6 +26,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
-    this.subsrcriber.unsubscribe();
+    this.subscriber.unsubscribe();
   }
 }

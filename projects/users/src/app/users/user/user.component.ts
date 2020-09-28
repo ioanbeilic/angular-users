@@ -32,6 +32,8 @@ export class UserComponent implements OnInit {
   withData: boolean = false;
   inputDisabled: boolean = false;
   title: string;
+  showPasswordField: boolean = true;
+  userUpdate: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<UserComponent>,
@@ -41,10 +43,22 @@ export class UserComponent implements OnInit {
     private notificationService: NotificationService
   ) {
     if (this.data) {
-      if (this.data.user) {
+      if (this.data.user && !this.userUpdate) {
         this.user = this.data.user;
         this.withData = true;
         this.inputDisabled = this.data.disabled;
+        this.title = this.data.title;
+        this.userUpdate = this.userUpdate;
+      } else if (this.data.user && this.userUpdate) {
+        this.user = this.data.user;
+        this.withData = true;
+        this.inputDisabled = this.data.disabled;
+        this.title = this.data.title;
+        this.userUpdate = this.userUpdate;
+      } else {
+        this.user = this.data.user;
+        this.withData = true;
+        this.userUpdate = true;
         this.title = this.data.title;
       }
     }
@@ -124,7 +138,6 @@ export class UserComponent implements OnInit {
           value: this.withData ? this.user.email : '',
           disabled: this.inputDisabled ? true : null,
         },
-
         [Validators.required, Validators.email],
       ],
       userType: [
