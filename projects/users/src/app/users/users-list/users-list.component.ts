@@ -103,6 +103,8 @@ export class UsersListComponent implements OnInit {
       );
   }
 
+  updateData(data: IUser) {}
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

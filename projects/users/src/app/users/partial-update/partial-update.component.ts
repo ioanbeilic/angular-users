@@ -22,6 +22,7 @@ export class PartialUpdateComponent implements OnInit {
     // todo  change to async await to load modal
     this.route.params.subscribe((params) => {
       const id = params['id'];
+      console.log(params);
       this.userService.getUser(id).subscribe((res) => {
         let user: IUser = res;
 

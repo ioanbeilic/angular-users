@@ -54,6 +54,12 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/users/departments`, department);
   }
 
+  deleteDepartments(departmentId: number) {
+    return this.http.delete(
+      `${this.baseUrl}/users/departments/${departmentId}`
+    );
+  }
+
   userTypes() {
     return this.http.get(`${this.baseUrl}/users/user-types`);
   }
