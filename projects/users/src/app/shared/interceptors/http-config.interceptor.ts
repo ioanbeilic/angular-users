@@ -23,45 +23,44 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       request = request.clone({
         headers: request.headers.set('Authorization', 'Bearer ' + token),
       });
-
-      if (!request.headers.has('Content-Type')) {
-        request = request.clone({
-          headers: request.headers.set('Content-Type', 'application/json'),
-        });
-      }
-
-      request = request.clone({
-        headers: request.headers.set('Accept', 'application/json'),
-      });
-
-      return next.handle(request).pipe(
-        map((event: HttpEvent<any>) => {
-          if (event instanceof HttpResponse) {
-            console.log('event--->>>', event);
-          }
-          return event;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          let data = {};
-          data = {
-            reason:
-              error && error.error && error.error.reason
-                ? error.error.reason
-                : '',
-            status: error.status,
-          };
-
-          const errorData: ISnackBarData = {
-            message:
-              'An error has occurred in the request, please try again later',
-            panelClass: ['toast-danger'],
-          };
-
-          this.notificationService.notification$.next(errorData);
-
-          return throwError(error);
-        })
-      );
     }
+    //  if (!request.headers.has('Content-Type')) {
+    //    request = request.clone({
+    //      headers: request.headers.set('Content-Type', 'application/json'),
+    //    });
+    //  }
+
+    request = request.clone({
+      headers: request.headers.set('Accept', 'application/json'),
+    });
+
+    return next.handle(request).pipe(
+      map((event: HttpEvent<any>) => {
+        if (event instanceof HttpResponse) {
+          console.log('event--->>>', event);
+        }
+        return event;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        let data = {};
+        data = {
+          reason:
+            error && error.error && error.error.reason
+              ? error.error.reason
+              : '',
+          status: error.status,
+        };
+
+        const errorData: ISnackBarData = {
+          message:
+            'An error has occurred in the request, please try again later',
+          panelClass: ['toast-danger'],
+        };
+
+        this.notificationService.notification$.next(errorData);
+
+        return throwError(error);
+      })
+    );
   }
 }
