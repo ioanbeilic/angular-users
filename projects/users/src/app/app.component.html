@@ -1,3 +1,4 @@
-<app-nav-bar></app-nav-bar>
-
-<router-outlet></router-outlet>
+<div *ngIf="redirect">
+  <app-nav-bar></app-nav-bar>
+  <router-outlet></router-outlet>
+</div>
