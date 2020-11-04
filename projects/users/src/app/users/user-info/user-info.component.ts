@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IUser } from '../../shared/interfaces/user.interface';
-import { UserComponent } from '../user/user.component';
 
 @Component({
   selector: 'app-user-info',

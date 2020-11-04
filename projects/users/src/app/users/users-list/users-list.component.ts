@@ -9,63 +9,7 @@ import { IUser } from '../../shared/interfaces/user.interface';
 import { UserService } from '../user.service';
 import { UserComponent } from '../user/user.component';
 
-const ELEMENT_DATA: IUser[] = [
-  {
-    id: 1,
-    name: 'aaa',
-    alias: 'AAA',
-    email: 'aa@aaa.com',
-    status: true,
-    departments: ['administrator', 'user'],
-    userType: 'develop tem and testing',
-    privileges: ['read', 'write', 'delete'],
-    date: new Date(),
-  },
-  {
-    id: 2,
-    name: 'aab',
-    alias: 'AAb',
-    email: 'ab@aaa.com',
-    departments: ['administrator', 'user'],
-    userType: 'develop tem and testing',
-    privileges: ['read', 'write', 'delete'],
-    status: true,
-    date: new Date(),
-  },
-  {
-    id: 3,
-    name: 'abc',
-    alias: 'Abc',
-    email: 'ac@aaa.com',
-    departments: ['administrator', 'user'],
-    userType: 'other',
-    privileges: ['read', 'write', 'delete'],
-    status: true,
-    date: new Date(),
-  },
-  {
-    id: 4,
-    name: 'aaa',
-    alias: 'AAA',
-    email: 'aa@aaa.com',
-    departments: ['administrator', 'user'],
-    userType: 'other',
-    privileges: ['read', 'write', 'delete'],
-    status: false,
-    date: new Date(),
-  },
-  {
-    id: 5,
-    name: 'aaa',
-    alias: 'AAA',
-    email: 'aa@aaa.com',
-    departments: ['administrator', 'user'],
-    userType: 'other',
-    privileges: ['read', 'write', 'delete'],
-    status: true,
-    date: new Date(),
-  },
-];
+const ELEMENT_DATA: IUser[] = [];
 
 @Component({
   selector: 'app-users-list',
@@ -111,7 +55,7 @@ export class UsersListComponent implements OnInit {
   }
 
   selectUser(user: IUser) {
-    this.selectedId = user.id;
+    this.selectedId = user.UserId;
     // this.userService.selectedUser(user);
   }
 
@@ -163,7 +107,7 @@ export class UsersListComponent implements OnInit {
       btnPress: false,
     };
 
-    if (user.status == true) {
+    if (user.UserStatus == 'ACTIVE') {
       // update default dialog id user is active
       data = {
         message: 'Disable selected user ?',
@@ -187,11 +131,12 @@ export class UsersListComponent implements OnInit {
         if (result.btnPress) {
           // yes is pressed
           // update user state
-          user.status = !user.status;
+          user.UserStatus = user.UserStatus == 'ACTIVE' ? 'ACTIVE' : 'INACTIVE';
+
           this.userService.updateUser(user).subscribe(
             (res) => {
               // if response from server is ok, update the button position
-              event.source.checked = !user.status;
+              event.source.checked = user.UserStatus == 'ACTIVE' ? false : true;
               // prepare the toast message
               const notificationData: ISnackBarData = {
                 message: 'User Inactive',
@@ -202,12 +147,12 @@ export class UsersListComponent implements OnInit {
             },
             (error) => {
               // for server error return the same state
-              event.source.checked = !user.status;
+              event.source.checked = user.UserStatus == 'ACTIVE' ? false : true;
             }
           );
         }
       } else {
-        event.source.checked = user.status;
+        event.source.checked = user.UserStatus == 'ACTIVE' ? true : false;
       }
 
       // replace  with server response
@@ -240,7 +185,7 @@ export class UsersListComponent implements OnInit {
         // check if click out or cancel
         if (result.btnPress) {
           // check if press yes
-          this.userService.deleteUser(user.id).subscribe((res: IUser) => {
+          this.userService.deleteUser(user.UserId).subscribe((res: IUser) => {
             const notificationData: ISnackBarData = {
               message: 'User Removed',
               panelClass: ['toast-success'],
@@ -249,7 +194,7 @@ export class UsersListComponent implements OnInit {
             this.notificationService.notification$.next(notificationData);
             // if server response success remove element directly form dom
             this.dataSource.data = this.dataSource.data.filter(
-              (el) => el.id !== res.id
+              (el) => el.UserId !== res.UserId
             );
           });
         }
@@ -277,7 +222,7 @@ export class UsersListComponent implements OnInit {
         // check if click out or cancel
         if (result.btnPress) {
           // check if press yes
-          this.userService.resetPassword(user.id).subscribe(() => {
+          this.userService.resetPassword(user.UserId).subscribe(() => {
             const notificationData: ISnackBarData = {
               message: 'Password sended',
               panelClass: ['toast-success'],

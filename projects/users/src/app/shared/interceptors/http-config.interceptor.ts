@@ -6,15 +6,26 @@ import {
   HttpInterceptor,
   HttpResponse,
   HttpErrorResponse,
+  HttpClient,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { NotificationService } from '../services/notification.service';
 import { ISnackBarData } from '../interfaces/snackbar.interface';
 
+import { environment } from '../../../environments/environment';
+
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
-  constructor(private notificationService: NotificationService) {}
+  errorData: ISnackBarData = {
+    message: 'An error has occurred in the request, please try again later',
+    panelClass: ['toast-danger'],
+  };
+
+  constructor(
+    private notificationService: NotificationService,
+    private http: HttpClient
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     const token: string = localStorage.getItem('access_token');
@@ -42,6 +53,50 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
+        console.log(error.status);
+
+        //        if (error.status === 401) {
+        //          if (error.error.msg === 'Token has expired') {
+        //            let params = {
+        //              token,
+        //              refresh_token: localStorage.getItem('refresh_token'),
+        //            };
+        //            return this.http
+        //              .post(`${environment.baseUrl}/refresh`, params)
+        //              .pipe(
+        //                mergeMap((data: any) => {
+        //                  console.log(data);
+        //                  //If reload successful update tokens
+        //                  if (data.status == 200) {
+        //                    //Update tokens
+        //                    localStorage.setItem(
+        //                      'access_token',
+        //                      data.result.access_token
+        //                    );
+        //                    localStorage.setItem(
+        //                      'refresh_token',
+        //                      data.result.refresh_token
+        //                    );
+        //                    //Clone our fieled request ant try to resend it
+        //                    request = request.clone({
+        //                      setHeaders: {
+        //                        access_token: data.result.access_token,
+        //                      },
+        //                    });
+        //                    return next.handle(request);
+        //                  } else {
+        //                    //Logout from account
+        //                    this.notificationService.notification$.next(this.errorData);
+        //                  }
+        //                })
+        //              );
+        //          } else {
+        //            //Logout from account or do some other stuff
+        //
+        //            this.notificationService.notification$.next(this.errorData);
+        //          }
+        //        }
+
         let data = {};
         data = {
           reason:
@@ -51,13 +106,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
           status: error.status,
         };
 
-        const errorData: ISnackBarData = {
-          message:
-            'An error has occurred in the request, please try again later',
-          panelClass: ['toast-danger'],
-        };
-
-        this.notificationService.notification$.next(errorData);
+        this.notificationService.notification$.next(this.errorData);
 
         return throwError(error);
       })

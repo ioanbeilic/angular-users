@@ -104,6 +104,8 @@
       >
     </mat-form-field>
 
+    <!--
+
     <mat-form-field class="form-element">
       <mat-select
         placeholder="User Type"
@@ -115,6 +117,7 @@
         }}</mat-option>
       </mat-select>
     </mat-form-field>
+          -->
     <!--
   <div class="custom-divider">
     <mat-divider></mat-divider>
@@ -132,8 +135,8 @@
       >
         <mat-option
           *ngFor="let department of departments"
-          [value]="department"
-          >{{ department }}</mat-option
+          [value]="department.DepartmentId"
+          >{{ department.Name }}</mat-option
         >
       </mat-select>
     </mat-form-field>

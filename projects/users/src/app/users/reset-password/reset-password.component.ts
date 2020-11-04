@@ -19,6 +19,6 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPassword() {
     console.log(this.user);
-    this.userService.resetPassword(this.user.id);
+    this.userService.resetPassword(this.user.UserId);
   }
 }

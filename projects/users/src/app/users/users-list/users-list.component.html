@@ -32,26 +32,26 @@
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.Name }}</td>
       </ng-container>
 
       <!-- alias Column -->
       <ng-container matColumnDef="alias">
         <th mat-header-cell *matHeaderCellDef>Alias</th>
-        <td mat-cell *matCellDef="let element">{{ element.alias }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.Username }}</td>
       </ng-container>
 
       <!-- email Column -->
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.Email }}</td>
       </ng-container>
 
       <!-- Date Column -->
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.date | date: "dd/MM/yyyy" }}
+          {{ element.LastUpdateTime | date: "dd/MM/yyyy" }}
         </td>
       </ng-container>
 
@@ -63,7 +63,7 @@
             <div>
               <mat-slide-toggle
                 (change)="userDisableConfirmation($event, element)"
-                [checked]="element.status"
+                [checked]="true ? element.status === 'ACTIVE' : false"
                 color="primary"
               >
                 {{

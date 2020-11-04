@@ -30,7 +30,7 @@ export class UserService {
   }
 
   updateUser(user: IUser) {
-    return this.http.put(`${this.baseUrl}/users/${user.id}`, user);
+    return this.http.put(`${this.baseUrl}/users/${user.UserId}`, user);
   }
 
   deleteUser(id: number) {
@@ -47,7 +47,7 @@ export class UserService {
   }
 
   getDepartments() {
-    return this.http.get(`${this.baseUrl}/users/departments`);
+    return this.http.get(`${this.baseUrl}/users/groups`);
   }
 
   createDepartments(department: string) {

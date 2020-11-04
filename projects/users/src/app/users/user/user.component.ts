@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs/internal/Observable';
 import { ISnackBarData } from '../../shared/interfaces/snackbar.interface';
 import { IUser } from '../../shared/interfaces/user.interface';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -20,11 +21,11 @@ interface IData {
 export class UserComponent implements OnInit {
   formGroup: FormGroup;
   fieldTextType: boolean;
-  departments = ['administrator', 'user', 'demo'];
+  departments: any;
   privileges = ['read', 'write', 'delete', 'user manager'];
   statusList = [true, false];
   userTypes = ['develop tem and testing', 'other'];
-  selectedDepartment: string[];
+  selectedDepartment = [];
   selectedUserType: string;
   selectedStatus: boolean;
   selectedPrivileges: string[];
@@ -39,9 +40,11 @@ export class UserComponent implements OnInit {
     public dialogRef: MatDialogRef<UserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IData,
     private formBuilder: FormBuilder,
-    private userService: UserService,
+    public userService: UserService,
     private notificationService: NotificationService
   ) {
+    this.getDepartments();
+
     if (this.data) {
       if (this.data.user && !this.userUpdate) {
         this.user = this.data.user;
@@ -71,6 +74,8 @@ export class UserComponent implements OnInit {
       this.title = 'New User';
       this.createForm();
     }
+
+    this.userDepartments();
   }
 
   // to do combine create and update form, the problem is the custom validator
@@ -113,7 +118,7 @@ export class UserComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       alias: [
         {
-          value: this.withData ? this.user.alias : '',
+          value: this.withData ? this.user.Username : '',
           disabled: this.inputDisabled,
         },
         [
@@ -124,7 +129,7 @@ export class UserComponent implements OnInit {
       ],
       name: [
         {
-          value: this.withData ? this.user.name : '',
+          value: this.withData ? this.user.Name : '',
           disabled: this.inputDisabled,
         },
         [
@@ -135,28 +140,28 @@ export class UserComponent implements OnInit {
       ],
       email: [
         {
-          value: this.withData ? this.user.email : '',
+          value: this.withData ? this.user.Email : '',
           disabled: this.inputDisabled ? true : null,
         },
         [Validators.required, Validators.email],
       ],
-      userType: [
-        {
-          value: this.withData ? this.user.userType : '',
-          disabled: this.inputDisabled ? true : null,
-        },
-        [Validators.required],
-      ],
+      //  userType: [
+      //    {
+      //      value: this.withData ? this.user.userType : '',
+      //      disabled: this.inputDisabled ? true : null,
+      //    },
+      //    [Validators.required],
+      //  ],
       departments: [
         {
-          value: this.withData ? this.user.departments : null,
+          value: this.withData ? this.selectedDepartment : null,
           disabled: this.inputDisabled ? true : null,
         },
         [Validators.required],
       ],
       privileges: [
         {
-          value: this.withData ? this.user.privileges : null,
+          value: this.withData ? this.user.PrivilegeIds : null,
           disabled: this.inputDisabled ? true : null,
         },
 
@@ -164,7 +169,7 @@ export class UserComponent implements OnInit {
       ],
       status: [
         {
-          value: this.withData ? this.user.status : null,
+          value: this.withData ? this.user.UserStatus : null,
           disabled: this.inputDisabled ? true : null,
         },
         [Validators.required],
@@ -172,7 +177,16 @@ export class UserComponent implements OnInit {
     });
   }
 
-  private getDepartments() {}
+  private userDepartments() {
+    this.selectedDepartment = this.user.DeparmentIds.match(/-?\d+/g);
+    console.log(this.selectedDepartment);
+  }
+
+  private getDepartments() {
+    this.userService
+      .getDepartments()
+      .subscribe((data) => (this.departments = data));
+  }
 
   private getUserType() {}
 
