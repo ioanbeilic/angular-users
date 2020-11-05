@@ -13,6 +13,11 @@ interface IData {
   title: string;
 }
 
+interface IPrivilege {
+  PermissionId: number;
+  PermissionName: string;
+}
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -22,8 +27,8 @@ export class UserComponent implements OnInit {
   formGroup: FormGroup;
   fieldTextType: boolean;
   departments: any;
-  privileges = ['read', 'write', 'delete', 'user manager'];
-  statusList = [true, false];
+  privileges: IPrivilege[];
+  statusList = ['ACTIVE', 'INACTIVE'];
   userTypes = ['develop tem and testing', 'other'];
   selectedDepartment = [];
   selectedUserType: string;
@@ -44,6 +49,7 @@ export class UserComponent implements OnInit {
     private notificationService: NotificationService
   ) {
     this.getDepartments();
+    this.getPrivileges();
 
     if (this.data) {
       if (this.data.user && !this.userUpdate) {
@@ -177,6 +183,12 @@ export class UserComponent implements OnInit {
     });
   }
 
+  private setUserStatus() {
+    if (this.user.UserStatus === 'ACTIVE') {
+      this.selectedStatus = 'active';
+    }
+  }
+
   private userDepartments() {
     this.selectedDepartment = this.user.DeparmentIds.match(/-?\d+/g);
     console.log(this.selectedDepartment);
@@ -190,7 +202,11 @@ export class UserComponent implements OnInit {
 
   private getUserType() {}
 
-  private getPrivileges() {}
+  private getPrivileges() {
+    this.userService
+      .privileges()
+      .subscribe((privileges: IPrivilege[]) => (this.privileges = privileges));
+  }
 
   // custom validator to check that two fields match
   private mustMatch(controlName: string, matchingControlName: string) {

@@ -161,8 +161,7 @@
         [(value)]="selectedStatus"
       >
         <mat-option *ngFor="let status of statusList" [value]="status">
-          <span *ngIf="status"> Active</span>
-          <span *ngIf="!status"> Inactive</span>
+          <span> {{ status.toLowerCase() | titlecase }}</span>
         </mat-option>
       </mat-select>
     </mat-form-field>
