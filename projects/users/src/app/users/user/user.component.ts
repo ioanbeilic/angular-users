@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs/internal/Observable';
 import { ISnackBarData } from '../../shared/interfaces/snackbar.interface';
 import { IUser } from '../../shared/interfaces/user.interface';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -18,6 +17,11 @@ interface IPrivilege {
   PermissionName: string;
 }
 
+interface IDepartment {
+  DepartmentId: number;
+  Name: string;
+}
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -26,20 +30,20 @@ interface IPrivilege {
 export class UserComponent implements OnInit {
   formGroup: FormGroup;
   fieldTextType: boolean;
-  departments: any;
-  privileges: IPrivilege[];
+  departmentsList: IDepartment[];
+  privilegesList: IPrivilege[];
   statusList = ['ACTIVE', 'INACTIVE'];
-  userTypes = ['develop tem and testing', 'other'];
   selectedDepartment = [];
-  selectedUserType: string;
   selectedStatus: boolean;
-  selectedPrivileges: string[];
+  selectedPrivileges = [];
   user: IUser;
   withData: boolean = false;
   inputDisabled: boolean = false;
   title: string;
   showPasswordField: boolean = true;
   userUpdate: boolean = false;
+  departments: number[];
+  privileges: number[];
 
   constructor(
     public dialogRef: MatDialogRef<UserComponent>,
@@ -80,8 +84,6 @@ export class UserComponent implements OnInit {
       this.title = 'New User';
       this.createForm();
     }
-
-    this.userDepartments();
   }
 
   // to do combine create and update form, the problem is the custom validator
@@ -160,14 +162,18 @@ export class UserComponent implements OnInit {
       //  ],
       departments: [
         {
-          value: this.withData ? this.selectedDepartment : null,
+          value: this.withData
+            ? this.user.DeparmentIds.match(/-?\d+/g).map((id) => Number(id))
+            : null,
           disabled: this.inputDisabled ? true : null,
         },
         [Validators.required],
       ],
       privileges: [
         {
-          value: this.withData ? this.user.PrivilegeIds : null,
+          value: this.withData
+            ? this.user.PrivilegeIds.match(/-?\d+/g).map((id) => Number(id))
+            : null,
           disabled: this.inputDisabled ? true : null,
         },
 
@@ -183,29 +189,30 @@ export class UserComponent implements OnInit {
     });
   }
 
-  private setUserStatus() {
-    if (this.user.UserStatus === 'ACTIVE') {
-      this.selectedStatus = 'active';
-    }
+  private userDepartments(): void {
+    this.selectedDepartment = this.user.DeparmentIds.match(/-?\d+/g).map((id) =>
+      Number(id)
+    );
   }
 
-  private userDepartments() {
-    this.selectedDepartment = this.user.DeparmentIds.match(/-?\d+/g);
-    console.log(this.selectedDepartment);
+  private userPrivileges(): void {
+    this.selectedPrivileges = this.user.PrivilegeIds.match(/-?\d+/g).map((id) =>
+      Number(id)
+    );
   }
 
-  private getDepartments() {
-    this.userService
-      .getDepartments()
-      .subscribe((data) => (this.departments = data));
+  private getDepartments(): void {
+    this.userService.getDepartments().subscribe((data: IDepartment[]) => {
+      this.departmentsList = data;
+      this.userDepartments();
+    });
   }
 
-  private getUserType() {}
-
-  private getPrivileges() {
-    this.userService
-      .privileges()
-      .subscribe((privileges: IPrivilege[]) => (this.privileges = privileges));
+  private getPrivileges(): void {
+    this.userService.privileges().subscribe((privileges: IPrivilege[]) => {
+      this.privilegesList = privileges;
+      this.userPrivileges();
+    });
   }
 
   // custom validator to check that two fields match
@@ -236,7 +243,8 @@ export class UserComponent implements OnInit {
     this.fieldTextType = !this.fieldTextType;
   }
 
-  onSubmit(user: IUser) {
+  onSubmit(user: IUser): void {
+    console.log(user);
     this.userService.createUser(user).subscribe(() => {
       const notificationData: ISnackBarData = {
         message: 'User Created',

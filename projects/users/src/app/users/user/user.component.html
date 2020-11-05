@@ -130,11 +130,10 @@
       <mat-select
         placeholder="Department"
         formControlName="departments"
-        [(value)]="selectedDepartment"
         multiple
       >
         <mat-option
-          *ngFor="let department of departments"
+          *ngFor="let department of departmentsList"
           [value]="department.DepartmentId"
           >{{ department.Name }}</mat-option
         >
@@ -148,9 +147,11 @@
         [(value)]="selectedPrivileges"
         multiple
       >
-        <mat-option *ngFor="let privilege of privileges" [value]="privilege">{{
-          privilege
-        }}</mat-option>
+        <mat-option
+          *ngFor="let privilege of privilegesList"
+          [value]="privilege.PermissionId"
+          >{{ privilege.PermissionName }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
 

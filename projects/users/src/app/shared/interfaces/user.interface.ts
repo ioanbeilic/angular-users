@@ -15,7 +15,7 @@ export interface IUser {
   Email: string;
   LastUpdateTime: Date;
   Name: string;
-  PrivilegeIds: string[];
+  PrivilegeIds: any;
   Privileges: string[];
   UserId: number;
   UserStatus: string;
