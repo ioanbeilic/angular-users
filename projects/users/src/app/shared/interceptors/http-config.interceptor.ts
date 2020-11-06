@@ -60,14 +60,25 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
       return this.authService.refreshToken().pipe(
         switchMap((token: any) => {
+          console.log(token);
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.access_token);
           return next.handle(this.addToken(request, token.access_token));
         })
       );
     } else {
+      console.log(401);
       return this.refreshTokenSubject.pipe(
-        filter((token) => token != null),
+        filter((token) => {
+          if (!token) {
+            // implement invalidate token on backens
+            // this.authService.logout();
+            console.log(token);
+            console.log('aaa');
+            this.authService.removeTokens();
+          }
+          return token;
+        }),
         take(1),
         switchMap((jwt) => {
           return next.handle(this.addToken(request, jwt));

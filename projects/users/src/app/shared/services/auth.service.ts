@@ -1,5 +1,6 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, isDevMode } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 
@@ -14,11 +15,14 @@ interface Tokens {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly JWT_TOKEN = localStorage.getItem('access_token');
-  private readonly REFRESH_TOKEN = localStorage.getItem('refresh_token');
+  private readonly JWT_TOKEN = 'access_token';
+  private readonly REFRESH_TOKEN = 'refresh_token';
   private loggedUser: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   login(user: { username: string; password: string }): Observable<boolean> {
     return this.http.post<any>(`${environment.baseUrl}/login`, user).pipe(
@@ -54,8 +58,6 @@ export class AuthService {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + this.REFRESH_TOKEN);
 
-    console.log(headers);
-
     return this.http
       .post<any>(
         `${environment.baseUrl}/refresh`,
@@ -68,7 +70,7 @@ export class AuthService {
       )
       .pipe(
         tap((tokens: Tokens) => {
-          this.storeJwtToken(tokens.access_token);
+          this.storeTokens(tokens);
         })
       );
   }
@@ -100,8 +102,13 @@ export class AuthService {
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refresh_token);
   }
 
-  private removeTokens(): void {
+  removeTokens(): void {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
+    if (isDevMode()) {
+      this.document.location.href = `http://localhost:8080/`;
+    } else {
+      this.document.location.href = `https://${window.location.hostname}`;
+    }
   }
 }
