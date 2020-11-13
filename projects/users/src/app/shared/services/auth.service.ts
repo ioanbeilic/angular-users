@@ -106,7 +106,7 @@ export class AuthService {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
     if (isDevMode()) {
-      this.document.location.href = `http://localhost:8080/`;
+      //  this.document.location.href = `http://localhost:8080/`;
     } else {
       this.document.location.href = `https://${window.location.hostname}`;
     }

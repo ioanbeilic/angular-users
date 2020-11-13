@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "copy:htaccess": "cp .htaccess dist/users/",
+    "build": "ng build --prod --project users && npm run copy:htaccess",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

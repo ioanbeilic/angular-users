@@ -113,7 +113,6 @@ export class UserComponent implements OnInit {
           [Validators.required, Validators.pattern('^(?=.*[0-9])|(?=.{6,})')],
         ],
         confirmPassword: ['', [Validators.required]],
-        userType: ['', [Validators.required]],
         departments: [null, [Validators.required]],
         privileges: [null, [Validators.required]],
         status: [null, [Validators.required]],
@@ -189,29 +188,15 @@ export class UserComponent implements OnInit {
     });
   }
 
-  private userDepartments(): void {
-    this.selectedDepartment = this.user.DeparmentIds.match(/-?\d+/g).map((id) =>
-      Number(id)
-    );
-  }
-
-  private userPrivileges(): void {
-    this.selectedPrivileges = this.user.PrivilegeIds.match(/-?\d+/g).map((id) =>
-      Number(id)
-    );
-  }
-
   private getDepartments(): void {
     this.userService.getDepartments().subscribe((data: IDepartment[]) => {
       this.departmentsList = data;
-      this.userDepartments();
     });
   }
 
   private getPrivileges(): void {
     this.userService.privileges().subscribe((privileges: IPrivilege[]) => {
       this.privilegesList = privileges;
-      this.userPrivileges();
     });
   }
 

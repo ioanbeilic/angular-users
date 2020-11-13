@@ -19,7 +19,7 @@ export class AppComponent {
 
     if (!token) {
       if (isDevMode()) {
-        this.document.location.href = `http://localhost:8080/`;
+        //        this.document.location.href = `http://localhost:8080/`;
       } else {
         this.document.location.href = `https://${window.location.hostname}`;
       }
