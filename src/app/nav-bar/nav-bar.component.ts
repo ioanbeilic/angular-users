@@ -23,8 +23,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
       }
     });
   }
-  ngOnInit() {}
+  ngOnInit() { }
 
+  logout() {
+    localStorage.removeItem('access-token')
+    localStorage.removeItem('refresh-token')
+  }
   ngOnDestroy() {
     this.subscriber.unsubscribe();
   }

@@ -1,15 +1,62 @@
 <div>
+  <mat-sidenav-container>
+    <mat-sidenav-content>
+      <mat-toolbar class="nav-bar">
+        <div>
+          <a href="/">ADVVAL</a>
+        </div>
+        <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+          <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+            <li>
+              <a href="/#/uptake/">
+                <i
+                  class="fa fa-sitemap"
+                  style="line-height: inherit; margin-right: 0.29vmax"
+                >
+                </i
+                >&nbsp;
+                <span class="label">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <i
+                  class="fa fa-file"
+                  style="line-height: inherit; margin-right: 0.29vmax"
+                >
+                </i
+                >&nbsp;
+                <span class="label">Browser</span>
+              </a>
+            </li>
+            <li>
+              <a>
+                <i
+                  class="fa fa-pie-chart"
+                  style="line-height: inherit; margin-right: 0.29vmax"
+                >
+                </i
+                >&nbsp;
+                <span class="label">Discovery Tool</span>
+              </a>
+            </li>
+            <li>
+              <a *ngClick="auth">
+                <i
+                  class="fa fa-lock"
+                  style="line-height: inherit; margin-right: 0.29vmax"
+                >
+                </i
+                >&nbsp;
+                <span class="label">LogOut</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </mat-toolbar>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
   <mat-toolbar>
-    <mat-toolbar-row class="nav-bar">
-      <!--
-        <span>menu bar</span>
-        <span class="example-spacer"></span>
-        <button mat-icon-button class="nav-icon" aria-label=" menu icon">
-          <mat-icon>menu</mat-icon>
-        </button>
-      -->
-    </mat-toolbar-row>
-
     <mat-toolbar-row class="secondary-nav-bar">
       <button mat-icon-button class="nav-icon" aria-label=" menu icon">
         <mat-icon>apps</mat-icon>

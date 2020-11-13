@@ -7,6 +7,7 @@ import { NavBarModule } from '../../../../src/app/nav-bar/nav-bar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor } from './shared/interceptors/http-config.interceptor';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { HttpConfigInterceptor } from './shared/interceptors/http-config.interce
     MaterialModule,
     NavBarModule,
     HttpClientModule,
+    MatIconModule
   ],
   providers: [
     {
@@ -27,4 +29,4 @@ import { HttpConfigInterceptor } from './shared/interceptors/http-config.interce
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
