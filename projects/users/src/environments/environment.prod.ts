@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: `https://lynx.advval.com/api`,
+  baseUrl: `https://develop.lynx.advval.com/api`,
 };
