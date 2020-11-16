@@ -4,12 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/users',
+    redirectTo: '/',
     pathMatch: 'full',
     data: { breadcrumb: 'Home' },
   },
   {
-    path: 'users',
+    path: '/',
     loadChildren: () =>
       import('./users/users.module').then((m) => m.UsersModule),
   },
@@ -19,4 +19,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
