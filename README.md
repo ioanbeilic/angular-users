@@ -58,3 +58,5 @@ if contain more the 1 project
 '''bash
 ng build --base-href=/users/ --project users # --project name
 '''
+
+app
